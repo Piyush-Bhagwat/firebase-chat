@@ -28,11 +28,12 @@ const logOut = () => {
     auth.signOut();
 };
 
-const sendMsg = async (uid,url, text) => {
+const sendMsg = async (uid, url, name, text) => {
     const newMsg = {
         text,
         uid,
         url,
+        name,
         time: Date.now(),
     };
     await addDoc(roomCol, newMsg);

@@ -3,13 +3,32 @@
     margin: 0;
     box-sizing: border-box;
     color: #fff;
-    background-color: #222831;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.app{
+h2{
+    font-weight: 100;
+}
+
+.app {
     padding: 0 2%;
 }
+
+body{
+    background-color: #222831;
+
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 2%;
+    background: #393e46;
+    border-radius: 20px;
+    margin: 12px 0;
+}
+
+
 .msg-display {
     display: flex;
     align-items: center;
@@ -46,7 +65,11 @@
     background-color: #D65A31;
 
     border-radius: 10px 10px 0 10px;
+}
 
+.msg-name{
+    font-size: 0.6em;
+    text-align: right;
 }
 
 .input {
@@ -59,19 +82,20 @@
     gap: 5px;
 }
 
-.dummy{
+.dummy {
     padding-top: 90px;
 }
 
-.input input{
+.input input {
     width: 100%;
     background-color: #fff;
     border: none;
     padding: 0 10px;
     color: black;
+    border-radius: 5px;
 }
 
-.send-btn{
+.send-btn {
     width: 45px;
     aspect-ratio: 1;
     border-radius: 4px;
@@ -79,28 +103,22 @@
     background-color: #D65A31;
 }
 
-.send-btn i{
+.send-btn i {
     background: none;
     font-size: 1.5em;
 }
 
-.btn{
-    background-color: none;
+.btn {
+    background: none;
     border: none;
 }
 
-.btn i{
+.btn i {
     font-size: 2em;
-    background  : none;
+    background: none;
 }
 
-.logout{
-    position: fixed;
-    top: 3px;
-
-}
-
-.login-cont{
+.login-cont {
     width: 100vw;
     height: 100vh;
 
@@ -109,7 +127,7 @@
     align-items: center;
 }
 
-.login-btn{
+.login-btn {
     width: 200px;
     height: 30px;
     border-radius: 4px;

@@ -5,32 +5,41 @@ import { collection, limit, orderBy, query } from "firebase/firestore";
 import { context } from "../context/msgContext";
 
 const Room = () => {
-    const q = query(collection(db, "room"), limit(50), orderBy("time",  "desc" ));
+    const q = query(
+        collection(db, "room"),
+        limit(200),
+        orderBy("time", "desc")
+    );
 
     const [messages] = useCollectionData(q);
     const [newMsg, setNewMsg] = useState("");
     const { user } = useContext(context);
     const dummy = useRef();
-    
-    useEffect(() =>{
+
+    useEffect(() => {
         // messages?.reverse();
-        dummy.current.scrollIntoView({behaviour: "smooth"});
-        return () => {}
+        dummy.current.scrollIntoView({ behaviour: "smooth" });
+        return () => {};
     }, [messages]);
 
     const renderMsg = () => {
         const revMsg = messages?.slice().reverse();
         return (
             <div>
-                {revMsg?.map((msg) => {
+                {revMsg?.map((msg, id) => {
                     return (
                         <div
+                            key={id}
                             className={`msg-display ${
                                 msg.uid === user.uid && "my-msg"
                             }`}
                         >
-                            <img className="dp" src={msg.url} alt="dp" />
-                            <div className="text">{msg.text}</div>
+                            {/* <img className="dp" src={msg.url} alt="dp" /> */}
+
+                            <div className="text">
+                                <div className="msg-name">{msg.name?.split(" ")[0]}</div>
+                                {msg.text}
+                            </div>
                         </div>
                     );
                 })}
@@ -73,8 +82,8 @@ const Room = () => {
 
     const handleSend = () => {
         const checkedMsg = checkMsg(newMsg);
-        if(checkedMsg.trim() != ""){
-            sendMsg(user.uid, user.photoURL, checkedMsg);
+        if (checkedMsg.trim() != "") {
+            sendMsg(user.uid, user.photoURL, user.displayName, checkedMsg);
         }
         setNewMsg("");
         dummy.current.scrollIntoView();
@@ -82,9 +91,6 @@ const Room = () => {
 
     return (
         <div>
-            <button onClick={logOut} className="btn logout">
-                <i className="fa-solid fa-arrow-right-from-bracket"></i>
-            </button>
             <div className="msg-area">
                 {renderMsg()} <div className="dummy" ref={dummy}></div>
             </div>
