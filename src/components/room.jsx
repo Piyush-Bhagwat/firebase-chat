@@ -37,7 +37,9 @@ const Room = () => {
                             {/* <img className="dp" src={msg.url} alt="dp" /> */}
 
                             <div className="text">
-                                <div className="msg-name">{msg.name?.split(" ")[0]}</div>
+                                <div className="msg-name">
+                                    ~{msg.name?.split(" ")[0]}~
+                                </div>
                                 {msg.text}
                             </div>
                         </div>
@@ -46,6 +48,12 @@ const Room = () => {
             </div>
         );
     };
+
+    window.addEventListener("keypress", (k) => {
+        if (k.key == "Enter") {
+            handleSend();
+        }
+    });
 
     const checkMsg = (msg) => {
         // Split the message into words
@@ -60,6 +68,9 @@ const Room = () => {
             "fucker",
             "sucker",
             "dick",
+            "bitch",
+            "motherfucker",
+            "lavda",
             "lode",
         ];
         const words = msg.split(" ");
