@@ -17,6 +17,22 @@ const Room = () => {
     const dummy = useRef();
 
     useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                console.log("hello");
+                handleSend(); // You may call handleSend here if needed
+            }
+        };
+
+        window.addEventListener("keypress", handleKeyPress);
+
+        return () => {
+            window.removeEventListener("keypress", handleKeyPress);
+        };
+    }, [newMsg]);
+
+    useEffect(() => {
         // messages?.reverse();
         dummy.current.scrollIntoView({ behaviour: "smooth" });
         return () => {};
@@ -48,12 +64,6 @@ const Room = () => {
             </div>
         );
     };
-
-    window.addEventListener("keypress", (k) => {
-        if (k.key == "Enter") {
-            handleSend();
-        }
-    });
 
     const checkMsg = (msg) => {
         // Split the message into words
