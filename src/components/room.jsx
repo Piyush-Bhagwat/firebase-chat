@@ -4,6 +4,8 @@ import { db, logOut, roomCol, sendMsg } from "../firebase/config.fb";
 import { collection, limit, orderBy, query } from "firebase/firestore";
 import { context } from "../context/msgContext";
 
+import sendPop from "../audio/pop1.mp3"
+
 const Room = () => {
     const q = query(
         collection(db, "room"),
@@ -15,6 +17,21 @@ const Room = () => {
     const [newMsg, setNewMsg] = useState("");
     const { user } = useContext(context);
     const dummy = useRef();
+
+    const [messageSound, setMessageSound] = useState(null);
+
+    useEffect(() => {
+        // Load message sound on component mount
+        const audio = new Audio(sendPop);
+        setMessageSound(audio);
+
+        return () => {
+            // Clean up audio element on component unmount
+            audio.pause();
+            setMessageSound(null);
+        };
+    }, []);
+
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -35,6 +52,7 @@ const Room = () => {
     useEffect(() => {
         // messages?.reverse();
         dummy.current.scrollIntoView({ behaviour: "smooth" });
+        messageSound?.play();
         return () => {};
     }, [messages]);
 
