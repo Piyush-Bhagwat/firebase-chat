@@ -29,6 +29,7 @@ nav {
     background: #393e46;
     border-radius: 20px;
     margin: 12px 0;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 4px 0px;
 }
 
 
@@ -58,7 +59,7 @@ nav {
     max-width: 65%;
     padding: 10px;
     padding-left: 10px;
-    border-radius: 10px 10px 10px 0px;
+    border-radius: 0px 10px 10px 10px;
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 4px 0px;
 
     display: flex;
@@ -76,7 +77,7 @@ nav {
     padding-left: 5px;
     background-color: #D65A31;
     align-items: flex-end;
-    border-radius: 10px 10px 0 10px;
+    border-radius: 10px 0px 10px 10px;
 }
 
 .msg-name {

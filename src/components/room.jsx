@@ -66,31 +66,31 @@ const Room = () => {
     const renderMsg = () => {
         const revMsg = messages?.slice().reverse();
         let prevSenderId = null;
-    
+
         return (
             <div>
                 {revMsg?.map((msg, id) => {
                     const isMyMsg = msg.uid === user.uid;
                     const showProfilePic = prevSenderId !== msg.uid;
                     prevSenderId = msg.uid;
-    
+
                     return (
                         <div
                             key={id}
                             className={`msg-display ${isMyMsg && "my-msg"}`}
                         >
-                           
-                                <img
-                                    className= {showProfilePic ? "dp" : "dp dp-hide" }
-                                    src={msg.url}
-                                    alt="dp"
-                                />
-                            
-    
+                            <img
+                                className={showProfilePic ? "dp" : "dp dp-hide"}
+                                src={msg.url}
+                                alt="dp"
+                            />
+
                             <div className="text">
-                                <div className="msg-name">
-                                    ~{msg.name?.split(" ")[0]}~
-                                </div>
+                                {showProfilePic && (
+                                    <div className="msg-name">
+                                        ~{msg.name?.split(" ")[0]}~
+                                    </div>
+                                )}
                                 {msg.text}
                                 <div className="time">{getTime(msg.time)}</div>
                             </div>
