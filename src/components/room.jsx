@@ -10,7 +10,7 @@ import recivePop from "../audio/pop2.mp3";
 const Room = () => {
     const q = query(
         collection(db, "room"),
-        limit(200),
+        limit(100),
         orderBy("time", "desc")
     );
 
@@ -22,7 +22,7 @@ const Room = () => {
     const [reciveSound, setReciveSound] = useState(null);
     const [sendSound, setSendSound] = useState(null);
 
-    useEffect(() => {
+    useEffect(() => {  //initalize audio
         // Load message sound on component mount
         const audio1 = new Audio(recivePop);
         const audio2 = new Audio(sendPop);
@@ -40,7 +40,7 @@ const Room = () => {
         };
     }, []);
 
-    useEffect(() => {
+    useEffect(() => { //add enter event listener
         const handleKeyPress = (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
@@ -56,12 +56,12 @@ const Room = () => {
         };
     }, [newMsg]);
 
-    useEffect(() => {
-        // messages?.reverse();
+    useEffect(() => { //play reciving sound and scroll
+        
         dummy.current.scrollIntoView({ behavior: "smooth" });
 
         if (messages) {
-            if (messages[0].uid !== user.uid) {
+            if (messages[0]?.uid !== user?.uid) {
                 reciveSound?.play().catch((error) => {
                     // Log the error or handle it gracefully
                     console.error("Failed to play sound:", error);
