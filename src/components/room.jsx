@@ -5,6 +5,7 @@ import { collection, limit, orderBy, query } from "firebase/firestore";
 import { context } from "../context/msgContext";
 
 import sendPop from "../audio/pop1.mp3";
+import recivePop from "../audio/pop2.mp3";
 
 const Room = () => {
     const q = query(
@@ -18,19 +19,24 @@ const Room = () => {
     const { user } = useContext(context);
     const dummy = useRef();
 
-    const [messageSound, setMessageSound] = useState(null);
+    const [reciveSound, setReciveSound] = useState(null);
+    const [sendSound, setSendSound] = useState(null);
 
     useEffect(() => {
         // Load message sound on component mount
-        const audio = new Audio(sendPop);
-        setMessageSound(audio);
+        const audio1 = new Audio(recivePop);
+        const audio2 = new Audio(sendPop);
+        setReciveSound(audio1);
+        setSendSound(audio2);
 
         const per = Notification.requestPermission();
 
         return () => {
             // Clean up audio element on component unmount
-            audio.pause();
-            setMessageSound(null);
+            audio1.pause();
+            audio2.pause();
+            setSendSound(null);
+            setReciveSound(null);
         };
     }, []);
 
@@ -55,10 +61,12 @@ const Room = () => {
         dummy.current.scrollIntoView({ behavior: "smooth" });
 
         if (messages) {
-            messageSound?.play().catch((error) => {
-                // Log the error or handle it gracefully
-                console.error("Failed to play sound:", error);
-            });
+            if (messages[0].uid !== user.uid) {
+                reciveSound?.play().catch((error) => {
+                    // Log the error or handle it gracefully
+                    console.error("Failed to play sound:", error);
+                });
+            }
         }
         return () => {};
     }, [messages]);
@@ -153,6 +161,7 @@ const Room = () => {
         if (checkedMsg.trim() != "") {
             sendMsg(user.uid, user.photoURL, user.displayName, checkedMsg);
         }
+        sendSound?.play()
         setNewMsg("");
         dummy.current.scrollIntoView({ behavior: "smooth" });
     };
