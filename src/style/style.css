@@ -41,14 +41,18 @@ nav {
 }
 
 .dp {
-    width: 0px;
+    width: 30px;
     aspect-ratio: 1;
     border-radius: 50%;
     margin: 0 7px;
 }
 
+.dp-hide{
+    width: 0;
+    margin: 0 22px;
+}
+
 .msg-display .text {
-    text-align: left;
     background-color: #393E46;
     min-width: 80px;
     max-width: 65%;
@@ -56,6 +60,10 @@ nav {
     padding-left: 10px;
     border-radius: 10px 10px 10px 0px;
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 4px 0px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .my-msg {
@@ -64,22 +72,20 @@ nav {
 }
 
 .my-msg .text {
-    text-align: right;
     padding-right: 10px;
     padding-left: 5px;
     background-color: #D65A31;
-
+    align-items: flex-end;
     border-radius: 10px 10px 0 10px;
 }
 
 .msg-name {
     font-size: 0.6em;
     color: rgb(226, 226, 226);
-    text-align: left;
 }
 
-.my-msg .msg-name {
-    text-align: right;
+.time {
+    font-size: 0.6em;
 }
 
 .input {

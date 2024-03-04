@@ -4,7 +4,7 @@ import { db, logOut, roomCol, sendMsg } from "../firebase/config.fb";
 import { collection, limit, orderBy, query } from "firebase/firestore";
 import { context } from "../context/msgContext";
 
-import sendPop from "../audio/pop1.mp3"
+import sendPop from "../audio/pop1.mp3";
 
 const Room = () => {
     const q = query(
@@ -25,13 +25,14 @@ const Room = () => {
         const audio = new Audio(sendPop);
         setMessageSound(audio);
 
+        const per = Notification.requestPermission();
+
         return () => {
             // Clean up audio element on component unmount
             audio.pause();
             setMessageSound(null);
         };
     }, []);
-
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -51,36 +52,64 @@ const Room = () => {
 
     useEffect(() => {
         // messages?.reverse();
-        dummy.current.scrollIntoView({ behaviour: "smooth" });
-        messageSound?.play();
+        dummy.current.scrollIntoView({ behavior: "smooth" });
+
+        if (messages) {
+            messageSound?.play().catch((error) => {
+                // Log the error or handle it gracefully
+                console.error("Failed to play sound:", error);
+            });
+        }
         return () => {};
     }, [messages]);
 
     const renderMsg = () => {
         const revMsg = messages?.slice().reverse();
+        let prevSenderId = null;
+    
         return (
             <div>
                 {revMsg?.map((msg, id) => {
+                    const isMyMsg = msg.uid === user.uid;
+                    const showProfilePic = prevSenderId !== msg.uid;
+                    prevSenderId = msg.uid;
+    
                     return (
                         <div
                             key={id}
-                            className={`msg-display ${
-                                msg.uid === user.uid && "my-msg"
-                            }`}
+                            className={`msg-display ${isMyMsg && "my-msg"}`}
                         >
-                            {/* <img className="dp" src={msg.url} alt="dp" /> */}
-
+                           
+                                <img
+                                    className= {showProfilePic ? "dp" : "dp dp-hide" }
+                                    src={msg.url}
+                                    alt="dp"
+                                />
+                            
+    
                             <div className="text">
                                 <div className="msg-name">
                                     ~{msg.name?.split(" ")[0]}~
                                 </div>
                                 {msg.text}
+                                <div className="time">{getTime(msg.time)}</div>
                             </div>
                         </div>
                     );
                 })}
             </div>
         );
+    };
+
+    const getTime = (time) => {
+        const date = new Date(time);
+
+        const hour = date.getHours();
+        const min = date.getMinutes();
+
+        return `${hour % 12 !== 0 ? hour % 12 : "12"}:${
+            min < 9 ? "0" + min : min
+        } ${hour >= 12 ? "pm" : "am"}`;
     };
 
     const checkMsg = (msg) => {
@@ -125,7 +154,7 @@ const Room = () => {
             sendMsg(user.uid, user.photoURL, user.displayName, checkedMsg);
         }
         setNewMsg("");
-        dummy.current.scrollIntoView();
+        dummy.current.scrollIntoView({ behavior: "smooth" });
     };
 
     return (
