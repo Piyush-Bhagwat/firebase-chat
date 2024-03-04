@@ -38,6 +38,7 @@ nav {
     align-items: center;
     flex-direction: row;
     margin-bottom: 3px;
+    align-items: flex-start;
 
 }
 
