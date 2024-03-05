@@ -1,6 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    deleteDoc,
+    doc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCXZoAKPXgdYIdwrIAj_HjKoEdaNoxcRMk",
@@ -39,4 +48,20 @@ const sendMsg = async (uid, url, name, text) => {
     await addDoc(roomCol, newMsg);
 };
 
-export { app, auth, db, roomCol, loginWithGoole, logOut, sendMsg };
+const getMsgId = async (time, uid) => {
+    try {
+        const q = query(
+            roomCol,
+            where("time", "==", time),
+            where("uid", "==", uid)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        await deleteDoc(querySnapshot.docs[0].ref);
+    } catch (er) {
+        console.log(er);
+    }
+};
+
+export { app, auth, db, roomCol, loginWithGoole, logOut, sendMsg, getMsgId };

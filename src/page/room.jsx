@@ -6,6 +6,7 @@ import { context } from "../context/msgContext";
 
 import sendPop from "../audio/pop1.mp3";
 import recivePop from "../audio/pop2.mp3";
+import Message from "../components/message";
 
 const Room = () => {
     const q = query(
@@ -22,7 +23,8 @@ const Room = () => {
     const [reciveSound, setReciveSound] = useState(null);
     const [sendSound, setSendSound] = useState(null);
 
-    useEffect(() => {  //initalize audio
+    useEffect(() => {
+        //initalize audio
         // Load message sound on component mount
         const audio1 = new Audio(recivePop);
         const audio2 = new Audio(sendPop);
@@ -40,7 +42,8 @@ const Room = () => {
         };
     }, []);
 
-    useEffect(() => { //add enter event listener
+    useEffect(() => {
+        //add enter event listener
         const handleKeyPress = (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
@@ -56,8 +59,9 @@ const Room = () => {
         };
     }, [newMsg]);
 
-    useEffect(() => { //play reciving sound and scroll
-        
+    useEffect(() => {
+        //play reciving sound and scroll
+
         dummy.current.scrollIntoView({ behavior: "smooth" });
 
         if (messages) {
@@ -76,49 +80,26 @@ const Room = () => {
         let prevSenderId = null;
 
         return (
-            <div>
+            <>
                 {revMsg?.map((msg, id) => {
                     const isMyMsg = msg.uid === user.uid;
                     const showProfilePic = prevSenderId !== msg.uid;
                     prevSenderId = msg.uid;
 
                     return (
-                        <div
-                            key={id}
-                            className={`msg-display ${isMyMsg && "my-msg"}`}
-                        >
-                            <img
-                                className={showProfilePic ? "dp" : "dp dp-hide"}
-                                src={msg.url}
-                                alt="dp"
-                            />
-
-                            <div className="text">
-                                {showProfilePic && (
-                                    <div className="msg-name">
-                                        ~{msg.name?.split(" ")[0]}~
-                                    </div>
-                                )}
-                                {msg.text}
-                                <div className="time">{getTime(msg.time)}</div>
-                            </div>
-                        </div>
+                        <Message
+                            id={id}
+                            msg={msg}
+                            isMyMsg={isMyMsg}
+                            showProfilePic={showProfilePic}
+                        />
                     );
                 })}
-            </div>
+            </>
         );
     };
 
-    const getTime = (time) => {
-        const date = new Date(time);
-
-        const hour = date.getHours();
-        const min = date.getMinutes();
-
-        return `${hour % 12 !== 0 ? hour % 12 : "12"}:${
-            min < 9 ? "0" + min : min
-        } ${hour >= 12 ? "pm" : "am"}`;
-    };
+   
 
     const checkMsg = (msg) => {
         // Split the message into words
@@ -161,7 +142,7 @@ const Room = () => {
         if (checkedMsg.trim() != "") {
             sendMsg(user.uid, user.photoURL, user.displayName, checkedMsg);
         }
-        sendSound?.play()
+        sendSound?.play();
         setNewMsg("");
         dummy.current.scrollIntoView({ behavior: "smooth" });
     };

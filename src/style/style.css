@@ -39,6 +39,7 @@ nav {
     flex-direction: row;
     margin-bottom: 3px;
     align-items: flex-start;
+    position: relative;
 
 }
 
@@ -103,6 +104,20 @@ nav {
     padding-top: 5px;
 }
 
+.msg-sidebox {
+    position: absolute;
+    right: 28%;
+    top: -105%;
+    padding: 0 3%;
+    height: 13vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: #393e46;
+    border-radius: 10px;
+    justify-content: space-around;
+}
+
 .dummy {
     padding-top: 90px;
 }
@@ -137,6 +152,10 @@ nav {
 .btn i {
     font-size: 2em;
     background: none;
+}
+
+.small-btn i{
+    font-size: 0.9em;
 }
 
 .login-cont {
